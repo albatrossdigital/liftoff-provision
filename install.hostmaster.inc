@@ -248,11 +248,12 @@ function drush_provision_hostmaster_install($site = NULL) {
     'platform' => $platform_name,
     'db_server' => $dbserver,
     'uri' => $site,
-    'client_name' => drush_get_option('client_name'),
+    'client_name' => 'liftoffadmin'//drush_get_option('client_name'),
     'profile' => $profile,
     'drush_aliases' => 'hm',
   ));
-  $data = provision_backend_invoke($site_name, 'provision-install', array(), array('client_email' => drush_get_option('client_email')));
+  //drush_get_option('client_email')
+  $data = provision_backend_invoke($site_name, 'provision-install', array(), array('client_email' => 'accounts@liftoff.space'));
   provision_backend_invoke($site_name, 'provision-verify');
 
   // exit if an error has occured.
@@ -264,6 +265,10 @@ function drush_provision_hostmaster_install($site = NULL) {
   drush_print(dt("Initializing the hosting system"));
   drush_invoke_process('@none', 'cache-clear', array('drush'));
   provision_backend_invoke($site_name, 'hosting-setup');
+
+  drush_invoke_process('@none', 'cache-clear', array('drush'));
+  provision_backend_invoke($site_name, 'user-create', array(drush_get_option('client_name')), array('mail' => drush_get_option('client_email')));
+  provision_backend_invoke($site_name, 'user-add-role', array(drush_get_option('administrator', drush_get_option('client_name'))));
 
   drush_print("");
   drush_print("==============================================================================");

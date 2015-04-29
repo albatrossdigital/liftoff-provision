@@ -248,7 +248,7 @@ function drush_provision_hostmaster_install($site = NULL) {
     'platform' => $platform_name,
     'db_server' => $dbserver,
     'uri' => $site,
-    'client_name' => 'liftoffadmin'//drush_get_option('client_name'),
+    'client_name' => 'liftoffadmin', //drush_get_option('client_name'),
     'profile' => $profile,
     'drush_aliases' => 'hm',
   ));
